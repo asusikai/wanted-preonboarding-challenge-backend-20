@@ -8,18 +8,14 @@ import lombok.*;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Setter
-    @NonNull
     private String name;
-    @Setter
-    @NonNull
-    private String password;
 
-    public Member(){}
+    private String password;
 }

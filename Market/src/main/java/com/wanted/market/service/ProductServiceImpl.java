@@ -45,14 +45,8 @@ public class ProductServiceImpl implements ProductService {
         Member member = memberRepository.findById(productDto.getMember_id())
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + productDto.getMember_id()));
 
-        Product product = new Product();
-        product.setName(productDto.getName());
-        product.setPrice(productDto.getPrice());
-        product.setStatus(Status.ON_SALE);
-        product.setMember(member);
-
-        Product savedProduct = productRepository.save(product);
-        return convertToDto(savedProduct);
+        Product product = new Product(productDto.getName(), productDto.getPrice(), member, Status.ON_SALE);
+        return convertToDto(productRepository.save(product));
     }
 
     @Override
@@ -61,9 +55,8 @@ public class ProductServiceImpl implements ProductService {
             Product product = productRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
 
-            product.setStatus(status);
-            Product updatedProduct = productRepository.save(product);
-            return convertToDto(updatedProduct);
+            product.updateStatus(status);
+            return convertToDto(product);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
